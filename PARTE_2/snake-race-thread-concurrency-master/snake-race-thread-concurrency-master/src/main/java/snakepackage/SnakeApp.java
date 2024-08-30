@@ -154,17 +154,26 @@ public class SnakeApp {
                 }
             }
         }
+        for (Snake snake : snakes) {
+            if (snake != null) {
+                if (snake == longestSnake) {
+                    snake.setColor(Color.BLUE); // Color para la serpiente más larga
+                } else if (snake == worstSnake) {
+                    snake.setColor(Color.RED); // Color para la peor serpiente
+                } else {
+                    snake.setColor(Color.GREEN); // Color original para las demás serpientes
+                }
+            }
+        }
 
         if (longestSnake != null) {
             longestSnakeLabel.setText("Serpiente viva más larga: " + longestSnake.getId());
-            worstSnake.setColor(Color.BLUE);
         } else {
             longestSnakeLabel.setText("Serpiente viva más larga: N/A");
         }
 
         if (worstSnake != null) {
             worstSnakeLabel.setText("Peor serpiente: " + worstSnake.getId());
-            worstSnake.setColor(Color.RED);
         } else {
             worstSnakeLabel.setText("Peor serpiente: N/A");
         }
