@@ -1,14 +1,19 @@
 package snakepackage;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import enums.GridSize;
 
 public class SnakeApp {
@@ -31,6 +36,10 @@ public class SnakeApp {
     int nr_selected = 0;
     Thread[] thread = new Thread[MAX_THREADS];
     private boolean running = false;
+
+    private JLabel longestSnakeLabel;
+    private JLabel worstSnakeLabel;
+
 
     public SnakeApp() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -82,6 +91,17 @@ public class SnakeApp {
             }
         });
 
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new GridLayout(2, 1));
+
+        longestSnakeLabel = new JLabel("Serpiente viva más larga: ");
+        worstSnakeLabel = new JLabel("Peor serpiente: ");
+
+        infoPanel.add(longestSnakeLabel);
+        infoPanel.add(worstSnakeLabel);
+
+        frame.add(infoPanel, BorderLayout.NORTH);
+
         frame.setVisible(true);
     }
 
@@ -103,6 +123,8 @@ public class SnakeApp {
                 snake.pause();
             }
         }
+        updateInfo();
+        board.repaint();
     }
 
     private void resumeSnakes() {
@@ -110,6 +132,41 @@ public class SnakeApp {
             if (snake != null) {
                 snake.resume();
             }
+        }
+        
+    }
+
+    private void updateInfo() {
+        Snake longestSnake = null;
+        Snake worstSnake = null;
+        int maxLength = 0;
+        int earliestDeath = Integer.MAX_VALUE;
+
+        for (Snake snake : snakes) {
+            if (snake != null) {
+                if (!snake.isSnakeEnd() && snake.getLength() > maxLength) {
+                    maxLength = snake.getLength();
+                    longestSnake = snake;
+                }
+                if (snake.isSnakeEnd() && snake.getDeathTime() < earliestDeath) {
+                    earliestDeath = snake.getDeathTime();
+                    worstSnake = snake;
+                }
+            }
+        }
+
+        if (longestSnake != null) {
+            longestSnakeLabel.setText("Serpiente viva más larga: " + longestSnake.getId());
+            worstSnake.setColor(Color.BLUE);
+        } else {
+            longestSnakeLabel.setText("Serpiente viva más larga: N/A");
+        }
+
+        if (worstSnake != null) {
+            worstSnakeLabel.setText("Peor serpiente: " + worstSnake.getId());
+            worstSnake.setColor(Color.RED);
+        } else {
+            worstSnakeLabel.setText("Peor serpiente: N/A");
         }
     }
 

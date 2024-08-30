@@ -1,5 +1,6 @@
 package snakepackage;
 
+import java.awt.Color;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Random;
@@ -28,6 +29,8 @@ public class Snake extends Observable implements Runnable {
     public boolean goal = false;
     private boolean paused = false;
     private final Object pauseLock = new Object();
+    private int deathTime = Integer.MAX_VALUE;
+    private Color color = Color.GREEN;
 
     public Snake(int idt, Cell head, int direction) {
         this.idt = idt;
@@ -40,11 +43,31 @@ public class Snake extends Observable implements Runnable {
         return snakeEnd;
     }
 
+    public int getLength() {
+        return snakeBody.size();
+    }
+
+    public int getId() {
+        return idt;
+    }
+
+    public int getDeathTime() {
+        return deathTime;
+    }
+
     private void generateSnake(Cell head) {
         start = head;
         //Board.gameboard[head.getX()][head.getY()].reserveCell(jumps, idt);
         snakeBody.add(head);
         growing = INIT_SIZE - 1;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     @Override
@@ -79,7 +102,7 @@ public class Snake extends Observable implements Runnable {
         }
         
         fixDirection(head);
-        
+        deathTime = (int) System.currentTimeMillis();
         
     }
 

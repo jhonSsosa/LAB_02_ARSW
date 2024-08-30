@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
 import enums.GridSize;
-import java.io.InputStream;
 
 public class Board extends JLabel implements Observer {
 
@@ -115,6 +114,7 @@ public class Board extends JLabel implements Observer {
 		drawTurboBoosts(g);
 	}
 
+
 	private void drawTurboBoosts(Graphics g) {
 		Image light = null;
                 InputStream resource=ClassLoader.getSystemResourceAsStream("Img/lightning.png");
@@ -183,25 +183,19 @@ public class Board extends JLabel implements Observer {
 
 	private void drawSnake(Graphics g) {
 		for (int i = 0; i != SnakeApp.MAX_THREADS; i++) {
-			for (Cell p : SnakeApp.getApp().snakes[i].getBody()) {
-				if (p.equals(SnakeApp.getApp().snakes[i].getBody().peekFirst())) {
-					g.setColor(new Color(050+(i*10), 205, 150));
-					g.fillRect(p.getX() * GridSize.WIDTH_BOX, p.getY()
-							* GridSize.HEIGH_BOX, GridSize.WIDTH_BOX,
-							GridSize.HEIGH_BOX);
+			Snake snake = SnakeApp.getApp().snakes[i];
+			for (Cell p : snake.getBody()) {
+				if (p.equals(snake.getBody().peekFirst())) {
+					g.setColor(new Color(050 + (i * 10), 205, 150));
+					g.fillRect(p.getX() * GridSize.WIDTH_BOX, p.getY() * GridSize.HEIGH_BOX, GridSize.WIDTH_BOX, GridSize.HEIGH_BOX);
 				} else {
-					if (SnakeApp.getApp().snakes[i].isSelected()) {
-						g.setColor(new Color(032, 178, 170));
-					} else
-						g.setColor(new Color(034, 139, 034));
-					g.fillRect(p.getX() * GridSize.WIDTH_BOX, p.getY()
-							* GridSize.HEIGH_BOX, GridSize.WIDTH_BOX,
-							GridSize.HEIGH_BOX);
+					g.setColor(snake.getColor());
+					g.fillRect(p.getX() * GridSize.WIDTH_BOX, p.getY() * GridSize.HEIGH_BOX, GridSize.WIDTH_BOX, GridSize.HEIGH_BOX);
 				}
 			}
 		}
-
 	}
+	
 
 	private void drawGrid(Graphics g) {
 		g.setColor(new Color(255, 250, 250));
