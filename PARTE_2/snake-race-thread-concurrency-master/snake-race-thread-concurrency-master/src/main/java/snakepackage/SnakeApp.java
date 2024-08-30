@@ -167,13 +167,13 @@ public class SnakeApp {
         }
 
         if (longestSnake != null) {
-            longestSnakeLabel.setText("Serpiente viva más larga: " + longestSnake.getId());
+            longestSnakeLabel.setText("<html>Serpiente viva más larga: <span style='color:blue;'>" + longestSnake.getId() + "</span></html>");
         } else {
             longestSnakeLabel.setText("Serpiente viva más larga: N/A");
         }
 
         if (worstSnake != null) {
-            worstSnakeLabel.setText("Peor serpiente: " + worstSnake.getId());
+            worstSnakeLabel.setText("<html>Peor serpiente: <span style='color:red;'>" + worstSnake.getId() + "</span></html>");
         } else {
             worstSnakeLabel.setText("Peor serpiente: N/A");
         }
